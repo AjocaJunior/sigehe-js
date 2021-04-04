@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Detalhes do Utilizador</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/libs/css/style.css">
+    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+
+    <link rel="icon" href="assets/images/logounitiva.jpg">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+
+
+            background-image: url(assets/images/timebg.jpg);
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- login page  -->
+    <!-- ============================================================== -->
+    <div class="container">
+        <div class="card ">
+
+            <div class="card-body">
+<h4 class="text-center">Detalhes do Utilizador</h4>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-control form-control-lg" type="text" id="firstName" name="firstName"
+                                required="" placeholder="Nome" autocomplete="off">
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-lg" type="text" id="secondName" name="secondName"
+                                required="" placeholder="Apelido" autocomplete="off">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-select">
+                                <select class="form-select-lg form-control m-b-10" id="genero"
+                                    aria-label="Default select example">
+                                    <option selected>Gênero</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="feminino">Feminino</option>
+                                 
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-lg" type="phone" id="phone" name="phone" required=""
+                                placeholder="Telefone" autocomplete="off">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+<div class="col">
+    <div class="form-select">
+        <select class="form-select-lg form-control m-b-10" id="curso" aria-label="Default select example">
+            <option selected>Curso</option>
+            <option value="Informatica de gestao">Informática de Gestão</option>
+            <option value="Engenharia civil">Engenharia Civil</option>
+            <option value="Arquitectura e planeamento fisico">Arquitectura e Planeamento Físico</option>
+        </select>
+
+    </div>
+</div>
+<div class="col">
+    <div class="form-select">
+        <select class="form-select-lg form-control m-b-10" id="semestre" aria-label="Default select example">
+            <option selected>Semestre</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+
+    </div>
+</div>
+                </div>
+               
+
+                <div class="row">
+                    <div class="col-12 text-center"><h5>Cadeiras</h5></div>
+                    <div class="col-3">
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="programacao 1">Programação 1
+                            </label>
+                          </div>
+                          
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="gestao de projectos">Gestão de Projectos
+                            </label>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="hidraulica">Hidráulica
+                            </label>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="">Análise Matemática 1
+                            </label>
+                          </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="">Inglês 1
+                            </label>
+                          </div>
+                    </div>
+                </div>
+              
+                <div class="form-group pt-2">
+                    <button class="btn btn-block btn-primary" id="salvar-actualizar-btn" type="submit">Salvar</button>
+                </div>
+                
+               
+
+            </div>
+      
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- end login page  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script>
+        firebase.auth().onAuthStateChanged(function (user) {
+
+            if (user) {
+                var userId = firebase.auth().currentUser.uid;
+                firebase.database().ref("Users/" +userId).once('value').then(function(snapshot)
+                {
+                    if(snapshot.val()){
+                        window.location.href = "index.html";
+                    }
+                });
+            }
+        });
+
+    </script>
+</body>
+
+</html>

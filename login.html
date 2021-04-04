@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/libs/css/style.css">
+    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+
+    <link rel="icon" href="assets/images/logounitiva.jpg">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-storage.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+
+
+        background-image: url(assets/images/timebg.jpg);
+        background-size: cover;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- login page  -->
+    <!-- ============================================================== -->
+    <div class="splash-container">
+        <div class="card ">
+            <div class="card-header text-center"><a href="index.html"><img class="logo-img" src="assets/images/logounitiva.jpg" alt="logo"></a></div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" id="email" type="email" placeholder="Email" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" id="password" type="password" placeholder="Senha">
+                    </div>
+                    <!-- <div class="form-select">
+                        <select class="form-select-lg form-control m-b-10" id="categoria" aria-label="Default select example">
+                            <option selected>Seccione</option>
+                            <option value="1">Estudante</option>
+                            <option value="2">Docente</option>
+                            <option value="3">Director do Curso</option>
+                          </select>
+                       
+                    </div> -->
+                    <button type="button" id="login-btn" class="btn btn-primary btn-lg btn-block">Entrar</button>
+                </form>
+            </div>
+            <div class="card-footer bg-white p-0  ">
+                
+                <div class="card-footer-item card-footer-item-bordered">
+                   <p>Esqueceu a Senha?
+<a href="forgot-password.html" class="footer-link">Recupere aqui</a>
+                   </p> 
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <!-- ============================================================== -->
+    <!-- end login page  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+
+
+    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script>
+firebase.auth().onAuthStateChanged(function(user){
+
+    if(user){
+        var userId = firebase.auth().currentUser.uid;
+                firebase.database().ref("Users/" +userId).once('value').then(function(snapshot)
+                {
+                    if(snapshot.val()){
+                        window.location.href = "index.html";
+                    }else{
+                        window.location.href = "user-details.html";
+                    }
+                });
+    }
+});
+
+    </script>
+</body>
+ 
+</html>
