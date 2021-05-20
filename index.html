@@ -196,14 +196,25 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="user-avatar text-center d-block">
+                                        <div id="wrapper">
+                                            <input type="file" accept="image/*" onchange="preview_image(event)">
+                                            <img id="output_image" src="assets/images/avatar-2.jpg"
+                                                class="rounded-circle user-avatar-xxl" />
+                                        </div>
 
-                                        <input type="file" class="custom-file-input" id="profile-img" />
 
-                                        <label for="profile-img">
 
-                                            Actualizar</label>
-                                        <img src="assets/images/avatar-2.jpg" id="selected-img" alt="User Avatar"
-                                            class="rounded-circle user-avatar-xxl">
+
+                                        <script>
+                                            function preview_image(event) {
+                                                var reader = new FileReader();
+                                                reader.onload = function () {
+                                                    var output = document.getElementById('output_image');
+                                                    output.src = reader.result;
+                                                }
+                                                reader.readAsDataURL(event.target.files[0]);
+                                            }
+                                        </script>
                                     </div>
                                     <div class="text-center">
                                         <h2 class="font-24 mb-0">Assis Júnior</h2>
@@ -213,37 +224,13 @@
                                 </div>
                             </div>
                             <script>
-                                var validImageTypes = ["image/gif", "image/jpg", "image/png"];
-                                $("#selected-img").hide();
-                                function previewImage(image_blog) {
-
-                                    if (image_blog.files && image_blog.files[0]) {
-                                        var reader = new FileReader();
-                                        reader.onload = function (e) {
-                                            $("#selected-img").attr('src', e.target.result);
-                                            $("#selected-img").fadeIn();
-                                        }
-                                        reader.readAsDataURL(image_blog.files[0]);
-
-                                        $("#selected-img").show();
-                                    }
-
-                                }
-
-                                $("#profile-img").change(function () {
-                                    previewImage(this);
-                                });
-
-                                $("#salvar-img").click(function () {
-
-                                    var picture = $("#profile-img").prop("files")[0];
 
 
-                                });
+
 
                                 /* ADICIONAR IMAGEM AO STORAGE FIREBASE*/
                                 var userId = firebase.auth().currentUser.uid;
-var databaseRef = firebase.database().ref().child("Users/"+userId);
+                                var databaseRef = firebase.database().ref().child("Users/" + userId);
 
 
                             </script>
