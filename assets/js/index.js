@@ -38,6 +38,9 @@ $("#login-btn").click(function () {
     }
 });
 
+
+//REGISTRAR ...
+
 $("#registrar-btn").click(function () {
     var code = $("#code").val();
     var email = $("#email").val();
@@ -74,6 +77,10 @@ $("#registrar-btn").click(function () {
     }
 });
 
+// FIM REGISTRAR
+
+//RECUPERAR PASSWORD
+
 $("#recuperar-pw-btn").click(function () {
     var auth = firebase.auth();
     var email = $("#email").val();
@@ -91,11 +98,17 @@ $("#recuperar-pw-btn").click(function () {
 
 });
 
+//FIM RECUPERAR PASSWORD..
+
+
+//LOG OUT
+
 $("#logout-btn").click(function () {
     firebase.auth().signOut();
     window.location = "login";
 });
 
+//FIM LOG OUT
 
 $("#salvar-actualizar-btn").click(function () {
     var firstName = $("#firstName").val();

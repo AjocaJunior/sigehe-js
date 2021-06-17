@@ -197,8 +197,11 @@
                                 <div class="card-body">
                                     <div class="user-avatar text-center d-block">
                                         <div id="wrapper">
-                                            <input type="file" accept="image/*" onchange="preview_image(event)">
-                                            <img id="output_image" src="assets/images/avatar-2.jpg"
+                                            <input type="file" class="custom-file-input" id="validatedCustomFile"
+                                                accept="image/*" onchange="preview_image(event)">
+                                            <label for="validatedCustomFile" class="custom-file-label">Escolher
+                                                Imagem</label>
+                                            <img id="selected-image" src="assets/images/avatar-2.jpg"
                                                 class="rounded-circle user-avatar-xxl" />
                                         </div>
 
@@ -206,21 +209,29 @@
 
 
                                         <script>
+
+                                            var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                                            // $("#selected-image").hide();
+
                                             function preview_image(event) {
                                                 var reader = new FileReader();
                                                 reader.onload = function () {
-                                                    var output = document.getElementById('output_image');
+                                                    var output = document.getElementById('selected-image');
                                                     output.src = reader.result;
                                                 }
                                                 reader.readAsDataURL(event.target.files[0]);
                                             }
+
+
+
+
                                         </script>
                                     </div>
                                     <div class="text-center">
-                                        <h2 class="font-24 mb-0">Assis Júnior</h2>
+                                        <h4 class="font-20 mb-0">Assis Júnior</h4>
                                         <p>Estudante</p>
                                     </div>
-                                    <button id="salvar-img" class="button">Salvar</button>
+                                    <button id="salvar-img" class="btn btn-primary btn-sm">Salvar</button>
                                 </div>
                             </div>
                             <script>
@@ -229,9 +240,39 @@
 
 
                                 /* ADICIONAR IMAGEM AO STORAGE FIREBASE*/
-                                var userId = firebase.auth().currentUser.uid;
-                                var databaseRef = firebase.database().ref().child("Users/" + userId);
+                               
+                                var databaseRef = firebase.database().ref().child("users/");
+                                databaseRef.once("value").then(function (snapshot) {
+                                    var name = document.getElementById('validatedCustomFile');
+                                    var dateStr = new Date().getTime();
+                                    var fileCompleteName = name + "_" + dateStr;
 
+                                    var storageRef = firebase.storage().ref("Fotos do Perfil");
+                                    var perfilStorageRef = storageRef.child(fileCompleteName);
+
+                                    var uploadTask = perfilStorageRef.put(picture);
+
+                                    uploadTask.on(
+                                        function complete() {
+                                            var userId = firebase.auth().currentUser.uid;
+                                            var userName;
+                                            firebase.database().ref("user/" + userId.uid).once('value').then(function (snapshot) {
+                                                var fName = (snapshot.val() && snapshot.val().nome);
+                                                var sName = (snapshot.val() && snapshot.val().apelido);
+                                                userName = fName +""+ sName;
+                                            });
+                                           uploadTask.snapshot.ref.getDownloadURL().then(function(){
+                                               var time = new Date();
+                                               var fotoperfil ={
+                                                   "image": getDownloadURL,
+                                                   "uid": userId.uid,
+                                                   "name": userName,
+                                                   
+                                               }
+                                           });
+                                        }
+                                    );
+                                });
 
                             </script>
                             <li class="nav-item ">
