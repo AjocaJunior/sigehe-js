@@ -18,14 +18,14 @@
 
     <link rel="icon" href="assets/images/logounitiva.jpg">
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
     <title>Dashboard</title>
 </head>
 
@@ -197,83 +197,91 @@
                                 <div class="card-body">
                                     <div class="user-avatar text-center d-block">
                                         <div id="wrapper">
-                                            <input type="file" class="custom-file-input" id="validatedCustomFile"
-                                                accept="image/*" onchange="preview_image(event)">
-                                            <label for="validatedCustomFile" class="custom-file-label">Escolher
-                                                Imagem</label>
+                                            <input type="file" id="select" class="custom-file-input" accept="image/*">
+                                            <label for="select" class="custom-file-label">Escolher
+                                                <span class="fas fa-camera"></span></label>
                                             <img id="selected-image" src="assets/images/avatar-2.jpg"
                                                 class="rounded-circle user-avatar-xxl" />
                                         </div>
 
 
-
-
-                                        <script>
-
-                                            var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                                            // $("#selected-image").hide();
-
-                                            function preview_image(event) {
-                                                var reader = new FileReader();
-                                                reader.onload = function () {
-                                                    var output = document.getElementById('selected-image');
-                                                    output.src = reader.result;
-                                                }
-                                                reader.readAsDataURL(event.target.files[0]);
-                                            }
-
-
-
-
-                                        </script>
                                     </div>
                                     <div class="text-center">
                                         <h4 class="font-20 mb-0">Assis Júnior</h4>
                                         <p>Estudante</p>
                                     </div>
                                     <button id="salvar-img" class="btn btn-primary btn-sm">Salvar</button>
+                                    <label id="progress-img"></label>
                                 </div>
                             </div>
                             <script>
 
+                                var imgName, imgURL;
+                                var files = [];
+                                var reader = new FileReader();
 
 
+                                document.getElementById('select').onclick = function (e) {
+                                    var input = document.createElement('input');
+                                    input.type = 'file';
+
+                                    input.onchange = e => {
+                                        files = e.target.files;
+                                        reader = new FileReader();
+                                        reader.onload = function () {
+                                            document.getElementById('selected-image').src = reader.result;
+                                        }
+                                        reader.readAsDataURL(files[0]);
+                                    }
+                                    input.click();
+
+                                }
 
                                 /* ADICIONAR IMAGEM AO STORAGE FIREBASE*/
-                               
-                                var databaseRef = firebase.database().ref().child("users/");
-                                databaseRef.once("value").then(function (snapshot) {
-                                    var name = document.getElementById('validatedCustomFile');
-                                    var dateStr = new Date().getTime();
-                                    var fileCompleteName = name + "_" + dateStr;
+                                document.getElementById('salvar-img').onclick = function () {
+                                    var userId = firebase.auth().currentUser.uid;
+                                    var dateTd = new Date().getTime();
+                                    imgName = "fotoUser" + dateTd;
+                                    var uploadTask = firebase.storage().ref('Fotos de Perfil/' + imgName + ".png").put(files[0]);
 
-                                    var storageRef = firebase.storage().ref("Fotos do Perfil");
-                                    var perfilStorageRef = storageRef.child(fileCompleteName);
+                                    uploadTask.on('state_changed', function (snapshot) {
+                                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                        document.getElementById('progress-img').innerHTML = 'Upload' + progress + '%';
+                                    },
 
-                                    var uploadTask = perfilStorageRef.put(picture);
+                                        function (error) {
+                                            alert('Erro ao gravar a foto');
+                                        },
+                                        function () {
+                                            uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+                                                imgURL = url;
 
-                                    uploadTask.on(
-                                        function complete() {
-                                            var userId = firebase.auth().currentUser.uid;
-                                            var userName;
-                                            firebase.database().ref("user/" + userId.uid).once('value').then(function (snapshot) {
-                                                var fName = (snapshot.val() && snapshot.val().nome);
-                                                var sName = (snapshot.val() && snapshot.val().apelido);
-                                                userName = fName +""+ sName;
-                                            });
-                                           uploadTask.snapshot.ref.getDownloadURL().then(function(){
-                                               var time = new Date();
-                                               var fotoperfil ={
-                                                   "image": getDownloadURL,
-                                                   "uid": userId.uid,
-                                                   "name": userName,
-                                                   
-                                               }
-                                           });
-                                        }
-                                    );
-                                });
+                                                firebase.database().ref('users/' + userId + '/fotoPerfil').set({
+                                                    nomeFoto: imgName,
+                                                    linkFoto: imgURL
+                                                });
 
+                                            }
+                                            );
+                                        });
+                                }
+
+                                // document.onload = function () {
+                                //     var userId = firebase.auth().currentUser.uid;
+                                //     firebase.database().ref('users/' + userId + '/fotoPerfil').on('value', function (snapshot) {
+                                //         document.getElementById('selected-image').src = snapshot.val().linkFoto;
+                                //     });
+                                //     console.log(userId);
+                                // }
+
+                                // BUSCAR DADOS DA BASE DE DADOS
+
+                                // var perfilFoto = firebase.database().ref('users/' + userId + '/fotoPerfil');
+                                // perfilFoto.on('value', function (fotoPerfil) {
+                                //     if (fotoPerfil.exists()) {
+                                //         var fotoPerfilHtml = perfilFoto.val().linkFoto;
+                                //     }
+                                // });
                             </script>
                             <li class="nav-item ">
                                 <a class="nav-link active" href="#"><i class="fa fa-fw fa-user-circle"></i>Dashboard
@@ -399,12 +407,12 @@
                                     <div class="form-group-inline">
                                         <label for="inputText3" class="col-form-label">Curso</label>
                                         <input id="inputText3" type="text" class="form-control m-b-10">
-                                        <label hidden for="inputText3" class="col-form-label">Semestre</label>
-                                        <input hidden id="inputText3" type="text" class="form-control">
-                                        <label hidden for="inputText3" class="col-form-label">Blog</label>
-                                        <input hidden id="inputText3" type="text" class="form-control">
-                                        <label hidden for="inputText3" class="col-form-label">Sala</label>
-                                        <input hidden id="inputText3" type="text" class="form-control">
+                                        <label hidden for="inputText4" class="col-form-label">Semestre</label>
+                                        <input hidden id="inputText4" type="text" class="form-control">
+                                        <label hidden for="inputText5" class="col-form-label">Blog</label>
+                                        <input hidden id="inputText5" type="text" class="form-control">
+                                        <label hidden for="inputText6" class="col-form-label">Sala</label>
+                                        <input hidden id="inputText6" type="text" class="form-control">
                                     </div>
 
 
@@ -543,11 +551,19 @@
     <script src="assets/js/index.js"></script>
 
     <script>
-        firebase.auth().onAuthStateChanged(function (user) {
 
+        firebase.auth().onAuthStateChanged(function (user) {
+            var userId = firebase.auth().currentUser.uid;
             if (!user) {
+               
                 window.location.href = "login.html";
             }
+            firebase.database().ref('users/' + userId + '/fotoPerfil').on('value', function (snapshot) {
+                document.getElementById('selected-image').src = snapshot.val().linkFoto;
+            });
+
+            
+        
         });
 
     </script>

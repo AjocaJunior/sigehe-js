@@ -1,4 +1,3 @@
-console.log('SIGEHE');
 
 var firebaseConfig = {
     apiKey: "AIzaSyCnQjyxi9V0GlrQs_CjXTWIK7_4CLDAzVk",
@@ -24,9 +23,9 @@ $("#login-btn").click(function () {
         firebase.auth().signInWithEmailAndPassword(email, password).then(function (result) {
 
             // var userId = firebase.auth().currentUser.uid;
-            
-                    window.location.href = "index.html";
-              
+
+            window.location.href = "index.html";
+
 
         }).catch(function (error) {
             var errormessage = error.message;
@@ -54,11 +53,10 @@ $("#registrar-btn").click(function () {
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function (result) {
 
                 var userId = firebase.auth().currentUser.uid;
-                firebase.database().ref("Users/" +userId).once('value').then(function(snapshot)
-                {
-                    if(snapshot.val()){
+                firebase.database().ref("Users/" + userId).once('value').then(function (snapshot) {
+                    if (snapshot.val()) {
                         window.location.href = "index.html";
-                    }else{
+                    } else {
                         window.location.href = "user-details.html";
                     }
                 });
@@ -66,7 +64,7 @@ $("#registrar-btn").click(function () {
 
             }).catch(function (error) {
                 var errormessage = error.message;
-                console.log("Error Message:" + errormessage);
+                window.alert(errormessage);
             });
         } else {
             window.alert('A senha não combina com a senha de confirmação');
@@ -129,20 +127,23 @@ $("#salvar-actualizar-btn").click(function () {
             "apelido": secondName,
             "genero": genero,
             "phone": phone,
-            "curso":curso,
-            "semestre":semestre
+            "curso": curso,
+            "semestre": semestre,
+            "userId": userId
         };
 
-        userRef.set(userData, function(error){
-if(error){
-    var errormessage = error.message;
-            console.log("Error Message:" + errormessage);
-}else{
-    window.location.href="index.html";
-}
+        userRef.set(userData, function (error) {
+            if (error) {
+                var errormessage = error.message;
+                console.log("Error Message:" + errormessage);
+            } else {
+                window.location.href = "index.html";
+            }
         });
     } else {
         window.alert('Porfavor, preencha todos os campos!')
     }
 
 });
+
+
