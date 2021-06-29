@@ -18,16 +18,15 @@
 
     <link rel="icon" href="assets/images/logounitiva.jpg">
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
+     https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
-    <title>PAINEL DO ADMINISTRADOR</title>
+    <title>PAINEL DE ADMINISTRAÇÃO</title>
 </head>
 
 <body>
@@ -195,10 +194,7 @@
 
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="user-avatar text-center d-block">
-                                        <img src="assets/images/avatar-2.jpg" alt="User Avatar"
-                                            class="rounded-circle user-avatar-xxl">
-                                    </div>
+                                    
                                     <div class="text-center">
                                         <h2 class="font-24 mb-0">Administrador</h2>
                                         <p>Administrador</p>
@@ -257,7 +253,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">Painel do Administrador- SIGEHE </h2>
+                                <h2 class="pageheader-title">Painel de Administração - SIGEHE </h2>
 
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
@@ -278,7 +274,6 @@
 
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-
 
                                 <form>
 
@@ -313,10 +308,10 @@
 
                                     }
                                 </script>
-
                             </div>
-                        </div>
 
+
+                        </div>
                         <div class="row">
                             <!-- ============================================================== -->
 
@@ -448,6 +443,8 @@
 
                         </div>
 
+                      
+
 
                     </div>
                 </div>
@@ -459,7 +456,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            All rights reserved. Developed by <a href="t.me/drizzy_33">Assis Júnior</a>.
+                            Todos os direitos reservados. Desenvolvido por <a href="/t.me/drizzy_33">Assis Júnior</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -497,13 +494,31 @@
     <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
     <!-- morris js -->
     <script src="assets/vendor/charts/morris-bundle/raphael.min.js"></script>
-    <!-- <script src="assets/vendor/charts/morris-bundle/morris.js"></script> -->
+    <script src="assets/vendor/charts/morris-bundle/morris.js"></script>
     <!-- chart c3 js -->
     <script src="assets/vendor/charts/c3charts/c3.min.js"></script>
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
     <script src="assets/js/index.js"></script>
+
+    <script>
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            var userId = firebase.auth().currentUser.uid;
+            if (!user) {
+
+                window.location.href = "login.html";
+            }
+            firebase.database().ref('users/' + userId + '/fotoPerfil').on('value', function (snapshot) {
+                document.getElementById('selected-image').src = snapshot.val().linkFoto;
+            });
+
+
+
+        });
+
+    </script>
 </body>
 
 </html>
