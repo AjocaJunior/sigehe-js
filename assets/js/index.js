@@ -147,3 +147,32 @@ $("#salvar-actualizar-btn").click(function () {
 });
 
 
+/// CADASTRAR CURSO
+
+// $("#salvar-curso-btn").click(function () {
+//     var cursoNome = $("#cursoNome").val();
+//     var codeCurso = $("#codeCurso").val();
+
+
+//     if (cursoNome != "" && codeCurso != "") {
+
+
+
+//         firebase.database().ref('cursos/' + cursoNome).set({
+//             cursoNome: cursoNome,
+//             codeCurso: codeCurso
+//         });
+
+//     } else {
+//         window.alert('Porfavor, preencha todos os campos!')
+//     }
+
+// });
+
+
+
+//FIM CADASTRAR CURSO
+
+
+
+
