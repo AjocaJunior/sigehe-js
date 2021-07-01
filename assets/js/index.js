@@ -1,16 +1,23 @@
 
-var firebaseConfig = {
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+const firebaseConfig = {
     apiKey: "AIzaSyCnQjyxi9V0GlrQs_CjXTWIK7_4CLDAzVk",
     authDomain: "sigehe-fa801.firebaseapp.com",
+    databaseURL: "https://sigehe-fa801-default-rtdb.firebaseio.com",
     projectId: "sigehe-fa801",
     storageBucket: "sigehe-fa801.appspot.com",
     messagingSenderId: "930304808574",
     appId: "1:930304808574:web:82e181baf98952bb022a2f",
     measurementId: "G-JBM10MRBX0"
-};
+  };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+
+
+
 
 firebase.auth.Auth.Persistence.LOCAL;
 
@@ -170,8 +177,9 @@ $("#salvar-actualizar-btn").click(function () {
 // });
 
 
-
 //FIM CADASTRAR CURSO
+
+//MOSTRAR LISTA DE BLOCOS
 
 
 
